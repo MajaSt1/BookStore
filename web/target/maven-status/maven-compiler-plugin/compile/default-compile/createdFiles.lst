@@ -1,0 +1,8 @@
+pl\jstk\constants\ViewNames.class
+pl\jstk\constants\ModelConstants.class
+pl\jstk\rest\common\GlobalControllerAdvice.class
+pl\jstk\rest\common\Error.class
+pl\jstk\config\WebConfig.class
+pl\jstk\controller\HomeController.class
+pl\jstk\BookApplication.class
+pl\jstk\rest\BookRestController.class

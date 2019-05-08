@@ -1,0 +1,15 @@
+pl\jstk\mapper\UserMapperImpl.class
+pl\jstk\service\impl\UserServiceImpl.class
+pl\jstk\repository\BookRepository.class
+pl\jstk\exception\BusinessException.class
+pl\jstk\PersistenceModuleConfig.class
+pl\jstk\mapper\impl\BookMapperImpl.class
+pl\jstk\mapper\UserMapper.class
+pl\jstk\repository\UserRoleRepository.class
+pl\jstk\service\BookService.class
+pl\jstk\repository\PrivilegeRepository.class
+pl\jstk\service\UserService.class
+pl\jstk\mapper\BookMapper.class
+pl\jstk\service\impl\BookServiceImpl.class
+pl\jstk\repository\UserRepository.class
+pl\jstk\InitialDataLoader.class

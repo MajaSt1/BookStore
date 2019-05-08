@@ -1,0 +1,8 @@
+pl\jstk\enumerations\BookStatus.class
+pl\jstk\entity\Book.class
+pl\jstk\entity\UserRole.class
+pl\jstk\entity\User.class
+pl\jstk\enumerations\BookCategory.class
+pl\jstk\to\BookTo.class
+pl\jstk\entity\Privilege.class
+pl\jstk\to\UserTo.class
