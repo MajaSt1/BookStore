@@ -20,14 +20,14 @@ public class BookRestController {
     }
 
     @GetMapping("/books")
-    public ResponseEntity<List<BookTo>> findAllBooks(){
+    public ResponseEntity<List<BookTo>> findAllBooks() {
         List<BookTo> allBooks = bookService.findAllBooks();
         return ResponseEntity.ok().body(allBooks);
     }
 
     @GetMapping("/books/{id}")
-    public ResponseEntity<BookTo> findBook(@PathVariable("id") Long id){
-        if(id < 0){
+    public ResponseEntity<BookTo> findBook(@PathVariable("id") Long id) {
+        if (id < 0) {
             return ResponseEntity.badRequest().body(null);
         }
         BookTo book = bookService.findById(id);
@@ -35,19 +35,18 @@ public class BookRestController {
     }
 
     @PostMapping("/books")
-    public ResponseEntity<BookTo> addBook(@RequestBody BookTo bookTo){
+    public ResponseEntity<BookTo> addBook(@RequestBody BookTo bookTo) {
         BookTo book = bookService.saveBook(bookTo);
         return ResponseEntity.ok().body(book);
     }
 
-    @RequestMapping(value= "/books-by-title")
-    public List<BookTo> finBooksByTitle(@RequestParam("titlePrefix") String titlePrefix){
+    @RequestMapping(value = "/books-by-title")
+    public List<BookTo> finBooksByTitle(@RequestParam("titlePrefix") String titlePrefix) {
         return bookService.findBooksByTitle(titlePrefix);
     }
 
-    @RequestMapping(value= "/books-by-title/{titlePrefix}")
-    public List<BookTo> findBooksByTitle(@PathVariable("titlePrefix") String titlePrefix){
+    @RequestMapping(value = "/books-by-title/{titlePrefix}")
+    public List<BookTo> findBooksByTitle(@PathVariable("titlePrefix") String titlePrefix) {
         return bookService.findBooksByTitle(titlePrefix);
     }
-
- }
+}
