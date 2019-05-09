@@ -26,8 +26,10 @@
                         <p th:text="${book.title}"></p>
                         <p th:text="${book.authors}"></p>
                         <p th:text="#{'books.status.'+${book.status}}"></p>
+                        <p th:text="${book.categories}"></p>
+                        <p th:text="${book.description}"></p>
                         <p>
-                            <a th:href="@{'/books/book?id='+${book.id}}"
+                            <a th:href="@{'/showBooks/book?id='+${book.id}}"
                                class="btn btn-primary"> <span
                                     class="glyphicon-info-sign glyphicon" th:text="#{books.details}"></span>
                             </a>
