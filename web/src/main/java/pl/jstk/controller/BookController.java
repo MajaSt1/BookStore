@@ -35,7 +35,7 @@ public class BookController {
         return ViewNames.BOOKS;
     }
 
-    @GetMapping(value = "/showBooks/book")
+    @GetMapping(value = "/books/book")
     public String showBook(@PathVariable("id") Long id, Model model) {
         //validator
         BookTo book = bookService.findById(id);
@@ -44,13 +44,13 @@ public class BookController {
         return ViewNames.BOOK;
     }
 
-    @GetMapping(value = "/saveBook")
+    @GetMapping(value = "/books/add")
     public ModelAndView showAddBookForm() {
 
         return new ModelAndView(ViewNames.ADDBOOK, "newBook", new BookTo());
     }
 
-    @PostMapping(value = "/saveBook")
+    @PostMapping(value = "/books/add")
     public String addBook(@ModelAttribute("newBook") @Validated BookTo book, BindingResult result, Model model) {
         //validation
         BookTo bookTo=bookService.saveBook(book);
@@ -58,4 +58,6 @@ public class BookController {
 
         return "redirect:/showBooks/book?id=" + bookTo.getId();
     }
+
+
 }
