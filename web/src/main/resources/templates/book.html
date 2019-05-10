@@ -26,7 +26,7 @@
                 </p>
                 <p>
                     <strong th:text="#{book.category}"> </strong>
-                    <th:block th:each="category : ${book.categories}"> <span th:text="${category}"> </span></th:block>
+                    <th:block th:each="category : ${book.categories}"> <span th:text="#{${category}}"> </span></th:block>
                 </p>
                 <p>
                     <strong th:text="#{book.description}"> </strong><span th:text="${book.description}"></span>

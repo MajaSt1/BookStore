@@ -30,10 +30,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="container">
-        <div class="row">
             <div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
                 <div class="thumbnail">
                     <div class="caption">
@@ -42,6 +38,19 @@
                         <p>
                             <a th:href="@{/books/add}" class="btn btn-default"> <span
                                     class="glyphicon-info-sign glyphicon" th:text="#{book.add}"></span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3 th:text="#{book.find}">Find book</h3>
+                        <p th:text="#{book.find.details}"></p>
+                        <p>
+                            <a th:href="@{/books/search}" class="btn btn-default"> <span
+                                    class="glyphicon-info-sign glyphicon" th:text="#{book.find}"></span>
                             </a>
                         </p>
                     </div>

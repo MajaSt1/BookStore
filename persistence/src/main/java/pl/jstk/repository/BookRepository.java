@@ -13,5 +13,4 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("select book from Book book where upper(book.title) like concat(upper(:title), '%')")
     List<Book> findBookByTitle(@Param("title") String title);
-
 }

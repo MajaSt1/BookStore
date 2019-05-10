@@ -11,4 +11,6 @@ public final class ViewNames implements Serializable {
 	public static final String LOGIN = "login";
 	public static final String WELCOME = "welcome";
 	public static final String ADDBOOK= "addBook";
+	public static final String DELETEBOOK= "deleteBook";
+	public static final String FINDBOOK= "searchBook";
 }

@@ -5,6 +5,8 @@ package pl.jstk.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import pl.jstk.entity.Book;
 import pl.jstk.exception.BusinessException;
 import pl.jstk.mapper.BookMapper;
@@ -15,6 +17,9 @@ import pl.jstk.to.BookTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.exact;
 
 @Service
 @Transactional(readOnly = true)
@@ -43,11 +48,22 @@ public class BookServiceImpl implements BookService {
         }
         return bookMapper.map2To(book.get());
     }
-
-
     @Override
     public List<BookTo> findBooksByTitle(String title) {
         return bookMapper.map2To(bookRepository.findBookByTitle(title));
+    }
+
+    @Override
+    public List<BookTo> findByBooksByParam(BookTo bookTo) {
+        Book book = bookMapper.map(bookTo);
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("title", exact().startsWith())
+                .withMatcher("authors",contains().startsWith())
+                .withMatcher("description",);
+
+        Example<Book> example = Example.of(book, matcher);
+        return bookMapper.map2To(bookRepository.findAll(example));
     }
 
     @Override

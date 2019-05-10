@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title th:text="#{book.delete}"></title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <section>
+        <div class="jumbotron">
+            <div class="container">
+                <h1 th:text="#{book.main}"></h1>
+                <p th:text="#{book.delete}"></p>
+            </div>
+        </div>
+    </section>
+    <section class="container">
+        <form action="#" th:action="@{/books/delete}" th:object="${newBook}" method="post" class="form-horizontal">
+            <fieldset>
+                <legend th:text="#{book.delete}"></legend>
+            </fieldset>
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10">
+                    <input type="date" id="btnAdd" class="btn btn-primary"
+                           value="Delete"/>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>
