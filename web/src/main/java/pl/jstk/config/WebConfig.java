@@ -47,8 +47,8 @@ public class WebConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("ram").password("ram123").roles("ADMIN");
-        auth.inMemoryAuthentication().withUser("ravan").password("ravan123").roles("USER");
-        auth.inMemoryAuthentication().withUser("kans").password("kans123").roles("USER");
+        auth.inMemoryAuthentication().withUser("ram").password("{noop}ram123").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("ravan").password("{noop}ravan123").roles("USER");
+        auth.inMemoryAuthentication().withUser("kans").password("{noop}kans123").roles("USER");
     }
 }
