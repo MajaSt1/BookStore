@@ -18,8 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
-import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.exact;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -58,9 +57,10 @@ public class BookServiceImpl implements BookService {
         Book book = bookMapper.map(bookTo);
 
         ExampleMatcher matcher = ExampleMatcher.matching()
-                .withMatcher("title", exact().startsWith())
-                .withMatcher("authors",contains().startsWith())
-                .withMatcher("description",);
+                .withIgnoreCase()
+                .withMatcher("title", startsWith().ignoreCase())
+                .withMatcher("authors",startsWith().ignoreCase())
+                .withMatcher("categories",match-> match.contains().ignoreCase());
 
         Example<Book> example = Example.of(book, matcher);
         return bookMapper.map2To(bookRepository.findAll(example));

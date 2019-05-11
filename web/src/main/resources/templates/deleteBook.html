@@ -19,13 +19,12 @@
         <form action="#" th:action="@{/books/delete}" th:object="${newBook}" method="post" class="form-horizontal">
             <fieldset>
                 <legend th:text="#{book.delete}"></legend>
-            </fieldset>
-            <div class="form-group">
-                <div class="col-lg-offset-2 col-lg-10">
-                    <input type="date" id="btnAdd" class="btn btn-primary"
-                           value="Delete"/>
-                </div>
+            </fieldset>    <div class="form-group">
+            <div class="col-lg-offset-2 col-lg-10">
+                <input type="date" id="btnAdd" class="btn btn-primary"
+                       value="Delete"/>
             </div>
+        </div>
         </form>
     </section>
 </div>

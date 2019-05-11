@@ -64,7 +64,7 @@ public class BookController {
     public String deleteBook(@PathVariable(value = "id") Long id){
         bookService.deleteBook(id);
 
-       return ViewNames.DELETEBOOK;
+       return ViewNames.BOOKS;
     }
 
     @GetMapping(value = "books/search")
