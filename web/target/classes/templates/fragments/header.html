@@ -20,10 +20,11 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li  style="display: inline-block;">
-                        <a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
-                    <li  style="display: inline-block;"><a th:href="@{/login}"><span
-                            class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                      <span sec:authorize="isAuthenticated()" style="display: inline-block;">
+                    | Logged user: <span sec:authentication="name"></span> |
+                    Roles: <span sec:authentication="principal.authorities"></span> |
+                    <a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span> Log out</a>
+                </span>
                 </ul>
             </div>
             <div>

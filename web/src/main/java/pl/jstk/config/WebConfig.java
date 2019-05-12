@@ -41,6 +41,8 @@ public class WebConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
                 .formLogin().loginPage("/login").permitAll()
                 .and()
                 .logout()
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login");
     }

@@ -12,7 +12,7 @@ public class LoginController {
 
     @GetMapping(value = "/login")
     public ModelAndView loginPage(@ModelAttribute(value = "error") String error,
-                                  @ModelAttribute(value = "logout") String logout) {
+                                  @ModelAttribute(value = "param.logout") String logout) {
 
         ModelAndView model = new ModelAndView();
         if (error != null) {
