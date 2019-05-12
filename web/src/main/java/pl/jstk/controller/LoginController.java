@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 
 @Controller
-public class LoginController {
+public class LoginController  {
 
     @GetMapping(value = "/login")
     public ModelAndView loginPage(@ModelAttribute(value = "error") String error,
@@ -42,6 +42,5 @@ public class LoginController {
 
         model.setViewName("403");
         return model;
-
     }
 }

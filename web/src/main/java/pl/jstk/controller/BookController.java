@@ -57,7 +57,7 @@ public class BookController {
         return "redirect:/showBooks";
     }
 
-    @PostMapping(value = "/showBooks")
+    @PostMapping(value = "/books/delete")
     public String deleteBook(@ModelAttribute("book") BookTo bookTo){
         bookService.deleteBook(bookTo.getId());
 

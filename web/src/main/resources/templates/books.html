@@ -27,7 +27,7 @@
                         <p th:text="${book.authors}"></p>
                         <p th:text="#{'books.status.'+${book.status}}"></p>
                         <p>
-                        <form th:action="@{/showBooks}" th:object="${book}" method="post">
+                        <form th:action="@{/books/delete}" th:object="${book}" method="post">
                             <div class="col-lg-offset-2 col-lg-10">
                                 <input type="hidden" th:value="${book.id}" name="id"/>
                                 <button type="submit" class="btn btn-primary">Delete</button>
