@@ -34,12 +34,9 @@ public class BookController {
         return ViewNames.BOOKS;
     }
 
-    @GetMapping(value = "/books/book/{id}")
-    public String showBook(@PathVariable("id") Long id, Model model) {
-        //validator
-        BookTo book = bookService.findById(id);
-        model.addAttribute("book", book);
-
+    @GetMapping("books/book")
+    public String getBook(@RequestParam("id") Long id, Model model) {
+        model.addAttribute("book", bookService.findById(id));
         return ViewNames.BOOK;
     }
 
@@ -60,11 +57,11 @@ public class BookController {
         return "redirect:/showBooks";
     }
 
-    @GetMapping(value = "/books/delete/{id}")
-    public String deleteBook(@PathVariable(value = "id") Long id){
-        bookService.deleteBook(id);
+    @PostMapping(value = "/showBooks")
+    public String deleteBook(@ModelAttribute("book") BookTo bookTo){
+        bookService.deleteBook(bookTo.getId());
 
-       return ViewNames.BOOKS;
+        return "redirect:/showBooks";
     }
 
     @GetMapping(value = "books/search")

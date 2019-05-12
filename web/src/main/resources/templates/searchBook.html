@@ -39,8 +39,13 @@
                         <option th:each="category : ${T(pl.jstk.enumerations.BookCategory).values()}" th:value="${category}" th:text="${category}"></option>
                     </select>
                 </div>
-
             </fieldset>
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10">
+                    <input type="submit" id="btnAdd" class="btn btn-primary"
+                           value="Search"/>
+                </div>
+            </div>
         </form>
     </section>
 </div>
