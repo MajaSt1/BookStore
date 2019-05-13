@@ -3,6 +3,7 @@ package pl.jstk.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.jstk.security.CustomAccessDeniedHandler;
 
-import static org.hibernate.cfg.AvailableSettings.USER;
 
 @Configuration
 @EnableWebSecurity
@@ -38,10 +38,14 @@ public class WebConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
         http.authorizeRequests()
                 .antMatchers("/webjars/**", "/img/**", "/css/**").permitAll()
                 .antMatchers("/books/delete").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/books/**").hasRole("WRITE")
+                .antMatchers(HttpMethod.GET,"/books/**").hasRole("READ")
                 .antMatchers("/**").hasAnyRole("ADMIN", "USER")
                 .and()
                 .csrf().disable()
                 .formLogin().loginPage("/login").permitAll()
+                .and()
+                .httpBasic()
                 .and()
                 .logout()
                 .invalidateHttpSession(true)
@@ -55,9 +59,9 @@ public class WebConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("ram").password("{noop}ram123").roles("ADMIN");
-        auth.inMemoryAuthentication().withUser("ravan").password("{noop}ravan123").roles("USER");
-        auth.inMemoryAuthentication().withUser("kans").password("{noop}kans123").roles("USER");
+        auth.inMemoryAuthentication().withUser("ram").password("{noop}ram123").roles("ADMIN","READ");
+        auth.inMemoryAuthentication().withUser("ravan").password("{noop}ravan123").roles("USER","READ");
+        auth.inMemoryAuthentication().withUser("kans").password("{noop}kans123").roles("USER","WRITE");
     }
 
     @Bean

@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @SpringBootTest
 public class BookControllerTest {
 
-    private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
     @Autowired
     private BookServiceImpl bookService;

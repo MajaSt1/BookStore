@@ -16,11 +16,11 @@
         </div>
     </section>
     <section class="container">
-        <form action="#" th:action="@{/books/search}" th:object="${newBook}" method="post" class="form-horizontal">
+        <form action="#" th:action="@{/books/search}" th:object="${searchBook}" method="post" class="form-horizontal">
             <fieldset>
                 <legend th:text="#{book.find}"></legend>
 
-                <!-- Sample template for some fields in Book Entity -->
+
                 <div class="form-group">
                     <label class="control-label col-lg-2" for="name" th:text="#{book.title}"></label>
                     <div class="col-lg-10">
@@ -28,17 +28,20 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-lg-2" for="authors" th:text="#{book.authors}"></label>
+                    <label class="control-label col-lg-2" for="description" th:text="#{book.description}"></label>
                     <div class="col-lg-10">
-                        <input id="authors" type="text" th:field="*{authors}" class="form:input-large"/>
+                        <input id="description" type="text" th:field="*{description}" class="form:input-large" />
                     </div>
                 </div>
-                <div class="btn btn-secondary dropdown-toggle">
-                    <select class="form-control" th:field="*{categories}"   id="categories" >
-                        <option value="0">Select category</option>
-                        <option th:each="category : ${T(pl.jstk.enumerations.BookCategory).values()}" th:value="${category}" th:text="${category}"></option>
-                    </select>
+                <div class="form-group">
+                    <label class="control-label col-lg-2" for="status" th:text="#{book.status}"></label>
+                    <div id="status" class="col-lg-10">
+                        <input type="radio" th:name="${status}" th:value="FREE" th:text="#{books.status.FREE}"></input>
+                        <input type="radio" th:name="${status}" th:value="LOAN" th:text="#{books.status.LOAN}"></input>
+                        <input type="radio" th:name="${status}" th:value="MISSING" th:text="#{books.status.MISSING}"></input>
+                    </div>
                 </div>
+
             </fieldset>
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">

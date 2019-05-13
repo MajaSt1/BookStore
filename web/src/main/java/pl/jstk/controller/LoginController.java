@@ -18,11 +18,9 @@ public class LoginController  {
         if (error != null) {
             model.addObject("error", "Invalid Credentials provided.");
         }
-
         if (logout != null) {
             model.addObject("message", "Logged out successfully.");
         }
-
         model.setViewName("login");
         return model;
     }

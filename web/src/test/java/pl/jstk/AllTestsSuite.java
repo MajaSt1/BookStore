@@ -1,5 +1,6 @@
 package pl.jstk;
 
+import pl.jstk.controller.BookControllerMockTests;
 import pl.jstk.controller.HomeControllerTest;
 import pl.jstk.rest.BookControllerMockTest;
 import pl.jstk.rest.BookControllerTest;
@@ -11,7 +12,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         HomeControllerTest.class,
         BookControllerTest.class,
-        BookControllerMockTest.class
+        BookControllerMockTest.class,
+    //    BookControllerMockTests.class
 })
 public class AllTestsSuite {
 

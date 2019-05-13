@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Table;
 
+import org.springframework.lang.Nullable;
 import pl.jstk.enumerations.BookCategory;
 import pl.jstk.enumerations.BookStatus;
 

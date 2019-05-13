@@ -12,16 +12,17 @@ import pl.jstk.constants.ViewNames;
 import pl.jstk.service.BookService;
 import pl.jstk.to.BookTo;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
+@RequestMapping("/books")
 public class BookController {
-
-    @Autowired
-    BooksFormValidator booksFormValidator;
+// javadoc
+// book not found exception!!!!
 
     private BookService bookService;
-    // logger.debug?
+
     @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -34,50 +35,54 @@ public class BookController {
         return ViewNames.BOOKS;
     }
 
-    @GetMapping("books/book")
-    public String getBook(@RequestParam("id") Long id, Model model) {
+    @GetMapping("/book")
+    public String getBook(@ModelAttribute("id") Long id, Model model) {
         model.addAttribute("book", bookService.findById(id));
+
         return ViewNames.BOOK;
     }
 
-    @GetMapping(value = "/books/add")
+    @GetMapping(value = "/add")
     public ModelAndView showAddBookForm() {
 
         return new ModelAndView(ViewNames.ADDBOOK, "newBook", new BookTo());
     }
 
-    @PostMapping(value = "/books/add")
-    public String addBook(@ModelAttribute("newBook") @Validated BookTo book, BindingResult result) {
-        BookTo book1= bookService.saveBook(book);
+    @PostMapping(value = "/add")
+    public String addBook(@ModelAttribute("newBook") @Validated BookTo book) {
+        BookTo book1 = bookService.saveBook(book);
 
-        ModelAndView modelAndView= new ModelAndView(ViewNames.BOOK);
+        ModelAndView modelAndView = new ModelAndView(ViewNames.BOOK);
 
         modelAndView.addObject("newBook", book1);
 
         return "redirect:/showBooks";
     }
 
-    @PostMapping(value = "/books/delete")
-    public String deleteBook(@ModelAttribute("book") BookTo bookTo){
+    @PostMapping(value = "/delete")
+    public String deleteBook(@ModelAttribute("book") BookTo bookTo) {
         bookService.deleteBook(bookTo.getId());
 
         return "redirect:/showBooks";
     }
 
-    @GetMapping(value = "books/search")
-    public ModelAndView showFindBookForm(){
+    @GetMapping(value = "/search")
+    public ModelAndView showFindBookForm(Model model) {
+        model.addAttribute("searchBook", new BookTo());
 
-        return new ModelAndView(ViewNames.FINDBOOK,"newBook",new BookTo());
+        return new ModelAndView(ViewNames.FINDBOOK, "searchBook", new BookTo());
     }
 
-    @PostMapping(value = "/books/search")
-    public ModelAndView searchBookByParams(@ModelAttribute("newBook") BookTo book) {
-       List<BookTo> bookList= bookService.findByBooksByParam(book);
+    @PostMapping(value = "/search")
+    public ModelAndView searchBookByParams(@ModelAttribute("searchBook") @Validated BookTo book) {
 
-       ModelAndView modelAndView= new ModelAndView();
+        book.setAuthors(new HashSet<>());
+        book.setCategories(new HashSet<>());
 
-       modelAndView.addObject("bookList",bookList);
-       modelAndView.setViewName(ViewNames.BOOKS);
+        List<BookTo> bookList = bookService.findByBooksByParam(book);
+
+        ModelAndView modelAndView = new ModelAndView(ViewNames.BOOKS);
+        modelAndView.addObject("bookList", bookList);
 
         return modelAndView;
     }

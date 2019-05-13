@@ -45,7 +45,7 @@ public class BookControllerMockTest {
         viewResolver = new ThymeleafViewResolver();
     }
 
-    @Before
+   @Before
     public void setup() {
         // given
         bookServiceMock = Mockito.mock(BookServiceImpl.class);
