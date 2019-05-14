@@ -227,7 +227,7 @@ private MockMvc mockMvc;
         ));
         book2.setDescription("SecondDescription");
         book2.setStatus(BookStatus.LOAN);
-        book2.setCategories(new HashSet<>(
+        book2.setCategories(new LinkedHashSet<>(
                 Arrays.asList(BookCategory.ACTION_AND_ADVENTURE,
                         BookCategory.HORROR)
         ));

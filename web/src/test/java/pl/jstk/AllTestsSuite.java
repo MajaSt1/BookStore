@@ -1,6 +1,5 @@
 package pl.jstk;
 
-import pl.jstk.controller.BookControllerMockTests;
 import pl.jstk.controller.HomeControllerTest;
 import pl.jstk.rest.BookControllerMockTest;
 import pl.jstk.rest.BookControllerTest;

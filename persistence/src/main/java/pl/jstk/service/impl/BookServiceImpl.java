@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import pl.jstk.Validation.BooksFormValidator;
+import pl.jstk.Validation.BooksValidator;
 import pl.jstk.entity.Book;
 import pl.jstk.exception.BusinessException;
 import pl.jstk.mapper.BookMapper;
@@ -30,7 +31,7 @@ public class BookServiceImpl implements BookService {
 
     private BookMapper bookMapper;
 
-    private BooksFormValidator booksFormValidator;
+    private BooksValidator booksFormValidator;
 
     @Autowired
     public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper, BooksFormValidator booksFormValidator) {
@@ -46,8 +47,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookTo findById(Long id) {
-        booksFormValidator.checkIfBookIdIsNull(id);
-        booksFormValidator.checkIfCollectionIsEmpty();
+        booksFormValidator.validateId(id);
 
         Optional<Book> book = bookRepository.findById(id);
         if(!book.isPresent()) {
@@ -57,15 +57,12 @@ public class BookServiceImpl implements BookService {
     }
     @Override
     public List<BookTo> findBooksByTitle(String title) {
-        booksFormValidator.checkIfCollectionIsEmpty();
 
         return bookMapper.map2To(bookRepository.findBookByTitle(title));
     }
 
     @Override
     public List<BookTo> findByBooksByParam(BookTo bookTo) {
-        booksFormValidator.checkIfBookIsNull(bookTo);
-        booksFormValidator.checkIfCollectionIsEmpty();
 
         Book book = bookMapper.map(bookTo);
 
@@ -82,9 +79,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookTo saveBook(BookTo book) {
-        booksFormValidator.checkIfBookIsNull(book);
-        booksFormValidator.checkIfBookComponentIsNull(book);
-
+        booksFormValidator.validateBookAddition(book);
         Book entity = bookMapper.map(book);
         entity = bookRepository.save(entity);
         return bookMapper.map2To(entity);
@@ -93,9 +88,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void deleteBook(Long id) {
-        booksFormValidator.checkIfBookIdIsNull(id);
-        booksFormValidator.checkIfIdExists(id);
-
+        booksFormValidator.validateBookDeletion(id);
         bookRepository.deleteById(id);
     }
 }

@@ -2,50 +2,71 @@ package pl.jstk.Validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.jstk.enumerations.BookCategory;
+import pl.jstk.exception.BookAdditionException;
+import pl.jstk.exception.BookDeletionException;
 import pl.jstk.exception.BusinessException;
-import pl.jstk.exception.NoSuchBookException;
-import pl.jstk.repository.BookRepository;
+import pl.jstk.exception.InvalidIdException;
+import pl.jstk.service.BookService;
 import pl.jstk.to.BookTo;
 
-@Component
-public class BooksFormValidator {
+import java.util.Set;
 
-    private BookRepository bookRepository;
+@Component
+public class BooksFormValidator implements BooksValidator{
+
+    private final BookService bookService;
 
     @Autowired
-    public BooksFormValidator(BookRepository bookRepository){
-        this.bookRepository=bookRepository;
+    public BooksFormValidator(BookService bookService) {
+        this.bookService = bookService;
     }
 
-    public void checkIfBookIdIsNull(Long id) {
-        if (id == null) {
-            throw new NoSuchBookException();
+    public void validateBookAddition(BookTo bookTo) {
+
+        validateTitle(bookTo.getTitle());
+        validateAuthors(bookTo.getAuthors());
+
+        validateDescription(bookTo.getDescription());
+
+        validateCategories(bookTo.getCategories());
+    }
+
+    public void validateBookDeletion(Long id) {
+        try {
+            bookService.findById(id);
+        } catch (BusinessException ex) {
+            throw new BookDeletionException("There is no such book to delete!");
         }
     }
 
-    public void checkIfBookIsNull(BookTo bookTo) {
-        if (bookTo == null) {
-            throw new NoSuchBookException();
+    public void validateId(Long id) {
+        if (id == null || id < 0) {
+            throw new InvalidIdException();
         }
     }
 
-    public void checkIfBookComponentIsNull(BookTo bookTo) {
-        if (bookTo.getTitle() == null || bookTo.getAuthors() == null
-                || bookTo.getStatus() == null || bookTo.getCategories() == null
-                || bookTo.getDescription() == null) {
-            throw new NoSuchBookException();
+    private void validateTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            throw new BookAdditionException("There is an error in the title!");
         }
     }
 
-    public void checkIfIdExists(Long id){
-        if(!bookRepository.existsById(id)){
-            throw new NoSuchBookException();
+    private void validateAuthors(Set<String> authors) {
+        if (authors == null || authors.isEmpty()) {
+            throw new BookAdditionException("There is an error in the authors!");
         }
     }
 
-    public void checkIfCollectionIsEmpty(){
-        if(bookRepository.findAll().isEmpty()){
-            throw new NoSuchBookException();
+    private void validateDescription(String description) {
+        if (description == null || description.isEmpty()) {
+            throw new BookAdditionException("There is an error related in the description!");
+        }
+    }
+
+    private void validateCategories(Set<BookCategory> categories) {
+        if (categories == null || categories.isEmpty()) {
+            throw new BookAdditionException("There is an error related in the categories!");
         }
     }
 }

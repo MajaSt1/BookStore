@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
+import pl.jstk.constants.ModelConstants;
+import pl.jstk.constants.ViewNames;
 
 import java.security.Principal;
 
@@ -31,14 +33,14 @@ public class LoginController  {
         ModelAndView model = new ModelAndView();
 
         if (user != null) {
-            model.addObject("msg", "Hi " + user.getName()
+            model.addObject(ModelConstants.MESSAGE, "Hi " + user.getName()
                     + ", you do not have permission to access this page!");
         } else {
-            model.addObject("msg",
+            model.addObject(ModelConstants.MESSAGE,
                     "You do not have permission to access this page!");
         }
 
-        model.setViewName("403");
+        model.setViewName(ViewNames.ERROR403);
         return model;
     }
 }
