@@ -43,7 +43,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
                 .antMatchers("/**").hasAnyRole("ADMIN", "USER")
                 .and()
                 .csrf().disable()
-                .formLogin().loginPage("/login").permitAll()
+                .formLogin().loginPage("/logon").permitAll()
                 .and()
                 .httpBasic()
                 .and()
@@ -51,9 +51,9 @@ public class WebConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/logon");
 
-        http.exceptionHandling().accessDeniedPage("/403");
+        http.exceptionHandling().accessDeniedPage("/error403");
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
     }
 
