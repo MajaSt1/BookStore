@@ -12,6 +12,13 @@ import java.security.Principal;
 @Controller
 public class LoginController  {
 
+    /**
+     * Method is handling HTTP Get request and returning view with login information execution
+     *
+     * @param error check if there is any error occured
+     * @param logout check if user is logout
+     * @return Form login execution.
+     */
     @GetMapping(value = "/logon")
     public ModelAndView loginPage(@ModelAttribute(value = "error") String error,
                                   @ModelAttribute(value = "param.logout") String logout) {
@@ -27,6 +34,12 @@ public class LoginController  {
         return model;
     }
 
+    /**
+     * Method is handling HTTP Get request and returning view with handling error 403.
+     *
+     * @param user User that is currently log on
+     * @return Handle error 403.
+     */
     @GetMapping(value = "/error403")
     public ModelAndView accesssDenied(Principal user) {
 

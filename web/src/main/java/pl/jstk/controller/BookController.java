@@ -26,10 +26,13 @@ public class BookController {
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
+
     /**
+     * Method is handling HTTP Get request and returning view with all books.
      *
-     *
-     **/
+     * @param model Model with list of all books
+     * @return View with all books.
+     */
     @GetMapping(value = "/showBooks")
     public String showAllBooks(Model model) {
         model.addAttribute("bookList", bookService.findAllBooks());
@@ -37,6 +40,13 @@ public class BookController {
         return ViewNames.BOOKS;
     }
 
+    /**
+     * Method is handling HTTP Get request and returning view with specific book by Id.
+     *
+     * @param model Model with list of all books
+     * @param id book Long id
+     * @return View with specific book
+     */
     @GetMapping("/getBook")
     public String getBook(@RequestParam("id") Long id, Model model) {
         model.addAttribute("book", bookService.findById(id));
@@ -44,6 +54,11 @@ public class BookController {
         return ViewNames.BOOK;
     }
 
+    /**
+     * Method is handling HTTP Get request and returning view with form to add book.
+     *
+     * @return View with form to add book
+     */
     @GetMapping(value = "/add")
     public ModelAndView showAddBookForm() {
         ModelAndView modelAndView = new ModelAndView(ViewNames.ADDBOOK);
@@ -51,6 +66,12 @@ public class BookController {
         return modelAndView;
     }
 
+    /**
+     * Method is handling HTTP Post request and returning view with all books when user add book.
+     *
+     * @param book Model with new book
+     * @return View with all books
+     */
     @PostMapping(value = "/add")
     public String addBook(@ModelAttribute("newBook") BookTo book) {
 
@@ -59,6 +80,13 @@ public class BookController {
         return ViewNames.BOOKS;
     }
 
+    /**
+     * Method is handling HTTP Get request and returning view with start up view.
+     *
+     * @param model Model with list of all books
+     * @param id book Long id
+     * @return View with start up view
+     */
     @GetMapping(value = "/delete")
     public String deleteBook(@RequestParam("id") Long id, Model model) {
         bookService.deleteBook(id);
@@ -66,6 +94,12 @@ public class BookController {
         return ViewNames.WELCOME;
     }
 
+    /**
+     * Method is handling HTTP Get request and returning view with view form to search book.
+     *
+     * @param model Model with book
+     * @return View with view form to search book
+     */
     @GetMapping(value = "/search")
     public ModelAndView showFindBookForm(Model model) {
         model.addAttribute("searchBook", new BookTo());
@@ -73,8 +107,14 @@ public class BookController {
         return new ModelAndView(ViewNames.FINDBOOK, "searchBook", new BookTo());
     }
 
+    /**
+     * Method is handling HTTP Post request and returning view with found book list.
+     *
+     * @param book object with book to search
+     * @return View with found book list.
+     */
     @PostMapping(value = "/search")
-    public ModelAndView searchBookByParams(@ModelAttribute("searchBook") @Validated BookTo book) {
+    public ModelAndView searchBookByParams(@ModelAttribute("searchBook") BookTo book) {
 
         book.setAuthors(new HashSet<>());
         book.setCategories(new HashSet<>());
