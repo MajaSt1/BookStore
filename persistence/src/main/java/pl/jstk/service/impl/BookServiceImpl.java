@@ -12,6 +12,7 @@ import pl.jstk.Validation.BooksFormValidator;
 import pl.jstk.Validation.BooksValidator;
 import pl.jstk.entity.Book;
 import pl.jstk.exception.BusinessException;
+import pl.jstk.exception.InvalidIdException;
 import pl.jstk.mapper.BookMapper;
 import pl.jstk.repository.BookRepository;
 import pl.jstk.service.BookService;
@@ -34,10 +35,9 @@ public class BookServiceImpl implements BookService {
     private BooksValidator booksFormValidator;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper, BooksFormValidator booksFormValidator) {
+    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
         this.bookMapper = bookMapper;
-        this.booksFormValidator=booksFormValidator;
     }
 
     @Override
@@ -47,17 +47,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookTo findById(Long id) {
-        booksFormValidator.validateId(id);
 
         Optional<Book> book = bookRepository.findById(id);
         if(!book.isPresent()) {
-            throw new BusinessException();
+            throw new InvalidIdException("Invalid id");
         }
         return bookMapper.map2To(book.get());
     }
     @Override
     public List<BookTo> findBooksByTitle(String title) {
-
         return bookMapper.map2To(bookRepository.findBookByTitle(title));
     }
 
@@ -70,7 +68,7 @@ public class BookServiceImpl implements BookService {
                 .withIgnoreCase()
                 .withMatcher("title", contains().ignoreCase())
                 .withMatcher("description",contains().ignoreCase())
-                .withMatcher("status",exact()); //exact
+                .withMatcher("status",exact());
 
         Example<Book> example = Example.of(book, matcher);
         return bookMapper.map2To(bookRepository.findAll(example));
@@ -79,7 +77,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookTo saveBook(BookTo book) {
-        booksFormValidator.validateBookAddition(book);
+
         Book entity = bookMapper.map(book);
         entity = bookRepository.save(entity);
         return bookMapper.map2To(entity);
@@ -88,7 +86,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void deleteBook(Long id) {
-        booksFormValidator.validateBookDeletion(id);
+
         bookRepository.deleteById(id);
     }
 }

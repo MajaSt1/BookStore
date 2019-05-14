@@ -32,7 +32,7 @@
                     <th:block th:each="category : ${book.categories}"> <span th:text="#{${category}}"> </span></th:block>
                 </p>
                 <p>
-                    <a th:href="@{'/showBooks'}" class="btn btn-default">
+                    <a th:href="@{'/books/showBooks'}" class="btn btn-default">
                         <span class="glyphicon-hand-left glyphicon"></span> back
                     </a>
 

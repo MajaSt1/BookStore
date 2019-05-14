@@ -3,6 +3,7 @@ package pl.jstk.rest.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,30 +17,20 @@ public class BookControllerAdvice {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BookControllerAdvice.class);
 
-    @ResponseBody
     @ExceptionHandler(BookAdditionException.class)
-    @ResponseStatus( HttpStatus.BAD_REQUEST)
-    public Error BookAdditionBusinessExceptionHandler(Exception ex) {
-        LOGGER.error("Error while adding book",ex);
-        return new Error(ex.getMessage());
+    public ResponseEntity<Object> BookAdditionBusinessExceptionHandler() {
+        LOGGER.error("Error while adding book");
+        return new ResponseEntity<>("Error while adding book", HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseBody
     @ExceptionHandler(BookDeletionException.class)
-    @ResponseStatus( HttpStatus.BAD_REQUEST)
-    public Error BookDeletionBusinessExceptionHandler2(Exception ex) {
-        LOGGER.error("Error while deleting book",ex);
-        return new Error(ex.getMessage());
+    public ResponseEntity<Object> BookDeletionBusinessExceptionHandler2() {
+        LOGGER.error("Error while deleting book");
+        return new ResponseEntity<>("Error while deleting book",HttpStatus.BAD_REQUEST);
     }
 
-
-    @ResponseBody
     @ExceptionHandler(InvalidIdException.class)
-    @ResponseStatus( HttpStatus.BAD_REQUEST)
-    public Error InvalidIdBusinessExceptionHandler1(Exception ex) {
-        LOGGER.error("Invalid id",ex);
-        return new Error(ex.getMessage());
+    public ResponseEntity<Object> InvalidIdBusinessExceptionHandler1() {
+        return new ResponseEntity<>("Invalid id",HttpStatus.BAD_REQUEST) ;
     }
-
-
 }

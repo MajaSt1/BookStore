@@ -27,16 +27,14 @@
                         <p th:text="${book.authors}"></p>
                         <p th:text="#{'books.status.'+${book.status}}"></p>
                         <p>
-                        <form th:action="@{/books/delete}" th:object="${book}" method="post">
-                            <div class="col-lg-offset-2 col-lg-10">
-                                <input type="hidden" th:value="${book.id}" name="id"/>
-                                <button type="submit" class="btn btn-primary">Delete</button>
-                            </div>
-                        </form>
+                            <a th:href="@{'/books/delete?id='+${book.id}}"
+                               class="btn btn-danger"> <span
+                                    class="glyphicon-info-sign glyphicon" th:text="#{books.delete}"></span>
+                            </a>
                         </p>
                         <p>
                         <div class="col-lg-offset-2 col-lg-10">
-                            <a th:href="@{'/books/book?id='+${book.id}}"
+                            <a th:href="@{'/books/getBook?id='+${book.id}}"
                                class="btn btn-primary"> <span
                                     class="glyphicon-info-sign glyphicon" th:text="#{books.details}"></span>
                             </a>

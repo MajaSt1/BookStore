@@ -12,7 +12,7 @@ import java.security.Principal;
 @Controller
 public class LoginController  {
 
-    @GetMapping(value = "/login")
+    @GetMapping(value = "/logon")
     public ModelAndView loginPage(@ModelAttribute(value = "error") String error,
                                   @ModelAttribute(value = "param.logout") String logout) {
 
@@ -27,7 +27,7 @@ public class LoginController  {
         return model;
     }
 
-    @GetMapping(value = "/403")
+    @GetMapping(value = "/error403")
     public ModelAndView accesssDenied(Principal user) {
 
         ModelAndView model = new ModelAndView();

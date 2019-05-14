@@ -6,6 +6,4 @@ public interface BooksValidator {
      void validateBookAddition(BookTo bookTo);
 
     void validateBookDeletion(Long id);
-
-    void validateId(Long id);
 }

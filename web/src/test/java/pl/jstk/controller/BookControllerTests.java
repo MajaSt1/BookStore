@@ -17,9 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import pl.jstk.Validation.BooksFormValidator;
+import pl.jstk.constants.ModelConstants;
 import pl.jstk.constants.ViewNames;
 import pl.jstk.enumerations.BookCategory;
 import pl.jstk.enumerations.BookStatus;
+import pl.jstk.rest.common.BookControllerAdvice;
 import pl.jstk.service.BookService;
 import pl.jstk.service.impl.BookServiceImpl;
 import pl.jstk.to.BookTo;
@@ -38,20 +40,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class BookControllerTests {
-// exception handling
-//test as a specific user
-private MockMvc mockMvc;
+
+    private MockMvc mockMvc;
+
+    private List<BookTo> bookList;
 
     @Mock
     private BookService bookServiceMock;
 
-    @Mock
-    private BooksFormValidator booksFormValidator;
-
     @InjectMocks
     private BookController bookController;
 
-    private List<BookTo> bookList;
 
     @Before
     public void setup() {
@@ -61,147 +60,89 @@ private MockMvc mockMvc;
     }
 
     @Test
-    public void shouldReturnViewWhenFindAllBooks() throws Exception{
+    public void shouldReturnBooksViewAndBookListWhenGetShowBooks() throws Exception{
         //given
         // when
         when(bookServiceMock.findAllBooks()).thenReturn(bookList);
         // then
-        Mockito.verify(bookServiceMock, times(1)).findAllBooks();
-        mockMvc.perform(get("/books/showBooks"))//
+        mockMvc.perform(get("/books/showBooks"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("bookList", bookServiceMock.findAllBooks()))
                 .andExpect(view().name(ViewNames.BOOKS));
-
-        verifyNoMoreInteractions(bookServiceMock);
     }
 
     @Test
-    public void shouldReturnViewWhenGetBook() throws Exception{
+    public void shouldReturnBookViewAndAttributeWhenGetBookById() throws Exception{
         //given
         //when
         when(bookServiceMock.findById(1L)).thenReturn(bookList.get(0));
 
         //then
-        mockMvc.perform(get("/book?id=1"))
+        mockMvc.perform(get("/books/getBook?id=1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name(ViewNames.BOOK))
-                .andExpect(model().attributeExists("book"));
-
-        verify(bookServiceMock, times(1)).findById(1L);
-        verifyNoMoreInteractions(bookServiceMock);
+                .andExpect(model().attributeExists("book"))
+                .andExpect(view().name(ViewNames.BOOK));
     }
 
-    @Test
-    public void shouldNotGetViewWhenBookFail404NotFound() throws Exception{
-        //given
-        //when
-        when(bookServiceMock.findById(1L)).thenReturn(null);
-        //then
-        mockMvc.perform(get("/book?id=10"))
-                .andExpect(status().isNotFound());
-
-        verify(bookServiceMock, times(1)).findById(1L);
-        verifyNoMoreInteractions(bookServiceMock);
-    }
 
     @Test
-    public void shouldReturnViewWhenAdd() throws Exception{
+    public void shouldReturnAddViewWhenGetAdd() throws Exception{
         //given
         //when
         //then
-        mockMvc.perform(get("/add"))
+        mockMvc.perform(get("/books/add"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists())
                 .andExpect(view().name(ViewNames.ADDBOOK));
-
-        verify(bookServiceMock, times(1)).findById(1L);
-        verifyNoMoreInteractions(bookServiceMock);
-
     }
     @Test
-    public void shouldReturnViewWhenAddBook() throws Exception{
+    public void shouldReturnWelcomeViewAndBookToWhenPostAdd() throws Exception{
         //given
         BookTo bookTo= new BookTo();
         //when
         when(bookServiceMock.saveBook(bookTo)).thenReturn(bookTo);
         //then
-        mockMvc.perform(post("/add"))
+        mockMvc.perform(post("/books/add"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists())
-                .andExpect(view().name(ViewNames.ADDBOOK));
-
-        verify(bookServiceMock, times(1)).findById(1L);
-        verifyNoMoreInteractions(bookServiceMock);
+                .andExpect(view().name(ViewNames.BOOKS));
     }
 
-
     @Test
-    public void testShouldNotAddBook_fail_409_conflict() throws Exception{}
-
-    @Test
-    public void shouldReturnViewWhenDeleteBook() throws Exception {
+    public void shouldReturnWelcomeViewWhenDeleteBook() throws Exception {
         //given
         //when
+        doNothing().when(bookServiceMock).deleteBook(any(Long.class));
         //then
         mockMvc.perform(
-                get("/delete?id=1"))
+                get("/books/delete?id=1"))
                 .andExpect(status().isOk())
+                .andExpect(model().attribute(ModelConstants.INFO, "Book 1 deleted"))
                 .andExpect(view().name(ViewNames.WELCOME));
         verify(bookServiceMock, times(1)).deleteBook(1L);
-        verifyNoMoreInteractions(bookServiceMock);
     }
 
     @Test
-    public void testShouldNotDeleteBook_404_not_found() throws Exception{
-        //given
-        BookTo book1= new BookTo();
-        //when
-        when(bookServiceMock.findById(book1.getId())).thenReturn(null);
-        //then
-        mockMvc.perform(
-                delete("/books/delete",book1))
-                .andExpect(status().isNotFound());
-        verify(bookServiceMock, times(1)).findById(book1.getId());
-        verifyNoMoreInteractions(bookServiceMock);
-    }
-
-    @Test
-    public void shouldReturnViewWhenGetSearchForm() throws Exception{
+    public void shouldReturnBooksViewAndBookListWhenPostSearch() throws Exception{
         //given
         //when
+        when(bookServiceMock.findByBooksByParam(any(BookTo.class))).thenReturn(bookList);
         //then
-        mockMvc.perform(get("/search"))
-        .andExpect(status().isOk())
-        .andExpect(view().name(ViewNames.FINDBOOK));
+        mockMvc.perform(get("/books/search"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists())
+                .andExpect(view().name(ViewNames.FINDBOOK));
     }
 
     @Test
     public void shouldReturnViewWhenSearch() throws Exception{
         //given
         //when
-        when(bookServiceMock.findByBooksByParam(any(BookTo.class))).thenReturn(bookList);
         //then
         mockMvc.perform(post("/books/search"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists())
                 .andExpect(view().name(ViewNames.BOOKS));
     }
 
-    @Test
-    public void shouldNotFindById() throws Exception {
-        mockMvc.perform(get("/books/book/{id}", -9))
-                .andExpect(status().isBadRequest())
-                .andDo(print()).andExpect(
-                content().string(isEmptyString()));
-    }
-
-    @Test
-    public void shouldFindById() throws Exception {
-        mockMvc.perform(get("/books/book/{id}", 1))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().string(containsString("Java dla początkujących")));
-    }
 
     private List<BookTo> generateList(){
         List<BookTo> bookList= new ArrayList<>();

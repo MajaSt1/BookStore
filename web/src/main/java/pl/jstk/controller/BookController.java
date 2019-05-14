@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.jstk.Validation.BooksFormValidator;
+import pl.jstk.constants.ModelConstants;
 import pl.jstk.constants.ViewNames;
 import pl.jstk.service.BookService;
 import pl.jstk.to.BookTo;
@@ -18,8 +19,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/books")
 public class BookController {
-// javadoc
-// book not found exception!!!!
 
     private BookService bookService;
 
@@ -35,8 +34,8 @@ public class BookController {
         return ViewNames.BOOKS;
     }
 
-    @GetMapping("/book")
-    public String getBook(@ModelAttribute("id") Long id, Model model) {
+    @GetMapping("/getBook")
+    public String getBook(@RequestParam("id") Long id, Model model) {
         model.addAttribute("book", bookService.findById(id));
 
         return ViewNames.BOOK;
@@ -44,26 +43,24 @@ public class BookController {
 
     @GetMapping(value = "/add")
     public ModelAndView showAddBookForm() {
-
-        return new ModelAndView(ViewNames.ADDBOOK, "newBook", new BookTo());
+        ModelAndView modelAndView = new ModelAndView(ViewNames.ADDBOOK);
+        modelAndView.addObject("newBook", new BookTo());
+        return modelAndView;
     }
 
     @PostMapping(value = "/add")
-    public String addBook(@ModelAttribute("newBook") @Validated BookTo book) {
-        BookTo book1 = bookService.saveBook(book);
+    public String addBook(@ModelAttribute("newBook") BookTo book) {
 
-        ModelAndView modelAndView = new ModelAndView(ViewNames.BOOK);
+        BookTo bookTo= bookService.saveBook(book);
 
-        modelAndView.addObject("newBook", book1);
-
-        return "redirect:/showBooks";
+        return ViewNames.BOOKS;
     }
 
-    @PostMapping(value = "/delete")
-    public String deleteBook(@ModelAttribute("book") BookTo bookTo) {
-        bookService.deleteBook(bookTo.getId());
-
-        return "redirect:/showBooks";
+    @GetMapping(value = "/delete")
+    public String deleteBook(@RequestParam("id") Long id, Model model) {
+        bookService.deleteBook(id);
+        model.addAttribute(ModelConstants.INFO, "Book " + id + " deleted");
+        return ViewNames.WELCOME;
     }
 
     @GetMapping(value = "/search")

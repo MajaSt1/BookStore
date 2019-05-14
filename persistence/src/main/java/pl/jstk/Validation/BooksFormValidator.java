@@ -19,8 +19,8 @@ public class BooksFormValidator implements BooksValidator{
 
     @Autowired
     public BooksFormValidator(BookService bookService) {
-        this.bookService = bookService;
-    }
+       this.bookService = bookService;
+   }
 
     public void validateBookAddition(BookTo bookTo) {
 
@@ -37,12 +37,6 @@ public class BooksFormValidator implements BooksValidator{
             bookService.findById(id);
         } catch (BusinessException ex) {
             throw new BookDeletionException("There is no such book to delete!");
-        }
-    }
-
-    public void validateId(Long id) {
-        if (id == null || id < 0) {
-            throw new InvalidIdException();
         }
     }
 
